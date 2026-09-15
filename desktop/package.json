@@ -1,0 +1,63 @@
+{
+  "name": "youscraper",
+  "version": "1.0.0",
+  "description": "Local YouTube metadata extractor and playlist organizer",
+  "main": "main.cjs",
+  "author": "Tanvir Mahtab (aka shiftingwhistler)",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --win nsis portable"
+  },
+  "devDependencies": {
+    "electron": "44.3.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.shiftingwhistler.youscraper",
+    "productName": "YouScraper",
+    "executableName": "YouScraper",
+    "artifactName": "YouScraper-${version}-${arch}.${ext}",
+    "asar": true,
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "loading.html",
+      "startup-icon.png",
+      "youscraper.ico"
+    ],
+    "extraResources": [
+      {
+        "from": "../build/windows/backend/YouScraperBackend",
+        "to": "backend"
+      },
+      {
+        "from": "../build/windows/deno/deno.exe",
+        "to": "backend/deno.exe"
+      }
+    ],
+    "win": {
+      "icon": "../assets/icons/youscraper.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "artifactName": "YouScraper-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "YouScraper",
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "YouScraper-Setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "YouScraper-${version}-Portable.${ext}"
+    },
+    "compression": "normal"
+  }
+}

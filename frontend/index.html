@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0c0f">
+  <title>YouScraper</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon"><img src="/assets/icons/youscraper-64.png" alt="YouScraper"></div>
+        <div><div class="eyebrow">LOCAL YOUTUBE METADATA TOOL</div><h1>YouScraper</h1><p>Extract, organize, search and export public YouTube metadata locally.</p></div>
+      </div>
+      <div class="header-status" id="headerStatus"><span class="status-dot"></span><span>Ready</span></div>
+    </header>
+
+    <nav class="tabs" aria-label="Application navigation">
+      <button class="tab active" data-tab="channelTab">Channel Archive</button>
+      <button class="tab" data-tab="playlistTab">Playlist Organizer</button>
+      <button class="tab" data-tab="aboutTab">About</button>
+    </nav>
+
+    <main>
+      <section id="channelTab" class="tab-page active">
+        <section class="panel" id="channelPanel">
+          <div class="section-head">
+            <div class="section-heading"><span class="step">01</span><div><h2>Channel</h2><p>Paste a public YouTube channel URL.</p></div></div>
+          </div>
+          <label for="channelUrl" class="label">Channel URL</label>
+          <div class="input-row"><input id="channelUrl" type="url" autocomplete="off" placeholder="https://www.youtube.com/@channelname"><button class="secondary action-btn" id="clearChannel">Clear</button></div>
+          <div class="hint">Supports @handle, /channel/, /c/, and /user/ formats.</div>
+        </section>
+        <section class="panel">
+          <div class="section-head"><div class="section-heading"><span class="step">02</span><div><h2>Data selection</h2><p>Choose fields before extraction to reduce unnecessary work.</p></div></div><div class="head-actions"><button class="secondary small action-btn" id="selectAllChannel">Select all</button><button class="secondary small action-btn" id="clearAllChannel">Clear all</button></div></div>
+          <div class="field-grid" id="channelFieldGrid"></div>
+        </section>
+        <section class="panel extract-panel">
+          <div class="section-head"><div class="section-heading"><span class="step">03</span><div><h2>Extract</h2><p>Discover the channel archive, then process the selected metadata.</p></div></div></div>
+          <div class="progress-wrap" id="channelProgressWrap" hidden><div class="progress-meta"><span id="channelProgressMessage">Ready</span><strong id="channelProgressPercent">0%</strong></div><div class="progress-track"><div class="progress-bar" id="channelProgressBar"></div></div><div class="progress-sub"><span id="channelProgressCount">0 / —</span><span id="channelEta">ETA —</span></div><div class="current-item" id="channelCurrentItem"></div></div>
+          <div class="extract-actions"><button class="primary" id="channelExtractBtn">Extract channel metadata</button><button class="danger" id="channelCancelBtn" hidden>Cancel</button></div>
+          <div class="error-banner" id="channelError" hidden></div>
+        </section>
+      </section>
+
+      <section id="playlistTab" class="tab-page">
+        <section class="panel">
+          <div class="section-head">
+            <div class="section-heading"><span class="step">01</span><div><h2>Sources</h2><p>Add any mix of YouTube channels and direct playlists, then discover their public playlists together.</p></div></div>
+          </div>
+          <div id="sourceList" class="source-list"></div>
+          <div class="source-actions"><button class="secondary action-btn" id="addSourceBtn"><span class="btn-icon">+</span>Add source</button><button class="primary action-btn" id="discoverSourcesBtn"><span class="btn-icon">⌕</span>Discover all playlists</button></div>
+          <div class="hint">You can add multiple channels and playlists. A channel contributes its public playlists; a direct playlist contributes that playlist only.</div>
+        </section>
+        <section class="panel">
+          <div class="section-head"><div class="section-heading"><span class="step">02</span><div><h2>Playlist selection</h2><p>Choose exactly which playlists from the discovered sources should be extracted.</p></div></div><div class="head-actions"><button class="secondary small action-btn" id="selectAllPlaylists"><span class="btn-icon">✓</span>Select all</button><button class="secondary small action-btn" id="clearAllPlaylists"><span class="btn-icon">×</span>Clear all</button></div></div>
+          <div class="playlist-tools"><div class="search-box"><span>⌕</span><input id="playlistSearch" placeholder="Search playlists…" autocomplete="off"></div><span class="selection-count" id="playlistSelectionCount">0 selected</span></div>
+          <div class="playlist-list" id="playlistList"><div class="empty-state">Add sources, then choose <b>Discover all playlists</b>.</div></div>
+        </section>
+        <section class="panel">
+          <div class="section-head"><div class="section-heading"><span class="step">03</span><div><h2>Data selection</h2><p>These fields are extracted before playlist organization.</p></div></div><div class="head-actions"><button class="secondary small action-btn" id="selectAllPlaylistFields"><span class="btn-icon">✓</span>Select all</button><button class="secondary small action-btn" id="clearAllPlaylistFields"><span class="btn-icon">×</span>Clear all</button></div></div>
+          <div class="field-grid" id="playlistFieldGrid"></div>
+        </section>
+        <section class="panel extract-panel">
+          <div class="section-head"><div class="section-heading"><span class="step">04</span><div><h2>Ultimate extraction</h2><p>Only the selected playlists are processed. Original playlist order is preserved.</p></div></div></div>
+          <div class="progress-wrap" id="playlistProgressWrap" hidden><div class="progress-meta"><span id="playlistProgressMessage">Ready</span><strong id="playlistProgressPercent">0%</strong></div><div class="progress-track"><div class="progress-bar" id="playlistProgressBar"></div></div><div class="progress-sub"><span id="playlistProgressCount">0 / —</span><span id="playlistEta">ETA —</span></div><div class="current-item" id="playlistCurrentItem"></div></div>
+          <div class="extract-actions"><button class="primary action-btn" id="playlistExtractBtn"><span class="btn-icon">▶</span>Extract selected playlists</button><button class="danger action-btn" id="playlistCancelBtn" hidden><span class="btn-icon">■</span>Cancel</button></div>
+          <div class="error-banner" id="playlistError" hidden></div>
+        </section>
+      </section>
+
+      <section class="panel results-panel" id="resultsPanel">
+        <div class="results-top"><div class="section-heading"><span class="step">05</span><div><h2>Results</h2><p id="resultContext">Extract data to populate the table.</p></div></div><div class="stats" id="stats"></div></div>
+        <div class="results-layout">
+          <div class="results-main">
+            <div class="results-toolbar">
+              <div class="results-filter-row">
+                <label class="toolbar-label" for="playlistSelect">Playlist</label>
+                <select id="playlistSelect" class="playlist-select" aria-label="Choose playlist to view">
+                  <option value="__all__">All playlists</option>
+                </select>
+              </div>
+              <div class="results-actions-row">
+                <div class="search-box"><span>⌕</span><input id="search" placeholder="Search title, description, URL, ID…" autocomplete="off"></div>
+                <button class="secondary action-btn" id="columnBtn">Columns</button><button class="secondary action-btn" id="resetView">Reset view</button>
+              </div>
+            </div>
+            <div class="column-menu" id="columnMenu" hidden><div class="column-menu-head"><strong>Visible/export columns</strong><button class="secondary small action-btn" id="closeColumns">Close</button></div><div id="columnChecklist"></div></div>
+            <div class="table-frame"><table id="resultsTable"><thead></thead><tbody></tbody></table></div>
+            <div class="results-footer"><span id="pageInfo">No records</span><span class="results-note">All matching records are shown in one scrollable preview.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel export-panel" id="exportPanel">
+        <div class="section-head"><div class="section-heading"><span class="step">06</span><div><h2>Export</h2><p id="exportHint">Exports use the current search scope and selected columns.</p></div></div></div>
+        <div class="export-summary" id="exportSummary">0 records ready to export · 0 columns selected</div>
+        <div class="export-grid"><button class="export-card" data-export="txt"><span class="export-icon">TXT</span><span class="export-name">TXT</span><span>Readable metadata blocks · UTF-8</span></button><button class="export-card" data-export="csv"><span class="export-icon">CSV</span><span class="export-name">CSV</span><span>Excel-friendly UTF-8 CSV</span></button><button class="export-card" data-export="pdf"><span class="export-icon">PDF</span><span class="export-name">PDF</span><span>Landscape table · Unicode fonts</span></button></div>
+      </section>
+    </main>
+
+    <section id="aboutTab" class="tab-page about-page panel">
+      <div class="about-header"><div class="section-heading"><span class="step">ABOUT</span><div><h2>About YouScraper</h2><p>YouScraper is a local utility for extracting and organizing public YouTube metadata from channels and playlists, then exporting it into useful formats.</p></div></div></div>
+      <section class="about-section"><h2>FAQ</h2><div class="faq-list">
+        <details><summary>Does YouScraper download YouTube videos?</summary><p>No. YouScraper extracts public metadata only. It does not download the actual video files.</p></details>
+        <details><summary>Does it require a YouTube API key?</summary><p>No. The application uses the bundled yt-dlp extraction engine rather than the YouTube Data API.</p></details>
+        <details><summary>Does it require Python to be installed?</summary><p>No for the released desktop application. The packaged release bundles the runtime and required dependencies.</p></details>
+        <details><summary>Can it handle YouTube Shorts?</summary><p>Yes, wherever Shorts are publicly exposed through the channel or playlist extraction path used by yt-dlp.</p></details>
+        <details><summary>Can it extract playlist information?</summary><p>Yes. Playlist Organizer discovers public playlists and keeps playlist identity and original sequence with the extracted records.</p></details>
+        <details><summary>Can I export the results?</summary><p>Yes. Results can be exported as UTF-8 TXT, Excel-friendly CSV, or landscape selectable-text PDF.</p></details>
+        <details><summary>Who made YouScraper?</summary><p>YouScraper was made by Tanvir Mahtab <em>(aka shiftingwhistler)</em>.</p></details>
+      </div></section>
+      <section class="about-section"><h2>Contact</h2><p class="contact-intro">If you find any bug, have any feature suggestion or just wanna say something, feel free to reach out.</p>
+        <div class="contact-list">
+          <div class="contact-row"><span class="contact-icon">@</span><div class="contact-copy"><strong>Email</strong><span>shiftingwhistler@gmail.com</span></div><button class="secondary small" id="copyEmail">Copy</button></div>
+          <button class="contact-row link-row" data-external="https://t.me/shifting_whistler"><span class="contact-icon">TG</span><div class="contact-copy"><strong>Telegram</strong><span>https://t.me/shifting_whistler</span></div><span class="external-mark">↗</span></button>
+          <button class="contact-row link-row" data-external="https://github.com/shifting-whistler"><span class="contact-icon">GH</span><div class="contact-copy"><strong>GitHub</strong><span>https://github.com/shifting-whistler</span></div><span class="external-mark">↗</span></button>
+        </div>
+      </section>
+      <section class="about-section support"><h2>Support</h2><p><strong>Enjoying YouScraper?</strong></p><p>If YouScraper is saving you time, consider giving it a star on GitHub.</p><button class="primary" data-external="https://github.com/shifting-whistler/YouScrapper"><span class="star-icon">★</span> Star on GitHub</button></section>
+    </section>
+
+    <footer>Local-only interface · Public YouTube metadata · No video files are downloaded</footer>
+  </div>
+
+  <div class="modal" id="detailModal" hidden><div class="modal-card"><button class="modal-close" id="modalClose" aria-label="Close">×</button><div class="modal-kicker" id="modalKicker">Description</div><h3 id="modalTitle"></h3><pre id="modalBody"></pre></div></div>
+  <div class="toast" id="toast" hidden></div>
+  <script src="/app.js"></script>
+</body>
+</html>

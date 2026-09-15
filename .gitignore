@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.exports/
+.vscode/
+.idea/
+.DS_Store
+build/windows/
+desktop/node_modules/
+desktop/dist/
+*.log
